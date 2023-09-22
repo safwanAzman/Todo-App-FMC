@@ -34,11 +34,13 @@ export default function Home() {
   const [dataComplete, setDataComplete] = useState([]);
   const [tab ,setTab] = useState('all')
   const [inputValue, setInputValue] = useState(''); 
+  const [loading ,setLoading] = useState(false);
 
 
   // Get Data
   const getData = async () => {
     try {
+      setLoading(true);
       const response = await fetch('api/todo/list-todo');
       const result = await response.json();
       const completedData = result.data.filter((item:any) => item.completed === "complete");
@@ -46,6 +48,7 @@ export default function Home() {
       setData(result.data);
       setDataComplete(completedData);
       setDataActive(activeData);
+      setLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -53,22 +56,22 @@ export default function Home() {
 
   //Post Data
   const postTodo = async () => {
-    await createTodo(getData,inputValue,setTab,setInputValue);
+    await createTodo(getData,inputValue,setTab,setInputValue,setLoading);
   };
 
   //Update Todo Complete
   const updateTodoComplete = async (id:any) => {
-    await updateStatusTodo(getData,id);
+    await updateStatusTodo(getData,id,setLoading);
   };
 
   //Delete Todo
   const deleteTodo = async(id:any) =>{
-    await deleteItemTodo(getData,id);
+    await deleteItemTodo(getData,id,setLoading);
   }
 
   //Delete Complete Todo
   const deleteCompleteTodo = async() =>{
-    await deleteCompletedTodo(getData,data);
+    await deleteCompletedTodo(getData,data,setLoading);
   }
 
   useEffect(() => {
@@ -107,6 +110,7 @@ export default function Home() {
                 {tab == 'all' ?
                   <TodoList 
                     tab={tab}
+                    loading={loading}
                     data={data} 
                     updateTodoComplete={updateTodoComplete} 
                     deleteTodo={deleteTodo} 
@@ -117,6 +121,7 @@ export default function Home() {
                 {tab == 'active' ?
                   <TodoList 
                     tab={tab}
+                    loading={false}
                     data={dataActive} 
                     updateTodoComplete={updateTodoComplete} 
                     deleteTodo={deleteTodo} 
@@ -127,6 +132,7 @@ export default function Home() {
                 {tab == 'complete' ?
                   <TodoList 
                     tab={tab}
+                    loading={false}
                     data={dataComplete} 
                     updateTodoComplete={updateTodoComplete} 
                     deleteTodo={deleteTodo} 

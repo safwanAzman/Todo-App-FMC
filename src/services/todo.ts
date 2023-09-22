@@ -8,7 +8,8 @@ export const createTodo =  async (
         getData: () => void,
         inputValue: string, 
         setTab: React.Dispatch<React.SetStateAction<string>>, 
-        setInputValue: React.Dispatch<React.SetStateAction<string>>
+        setInputValue: React.Dispatch<React.SetStateAction<string>>,
+        setloading : React.Dispatch<React.SetStateAction<boolean>>
     ) => {
 
     interface PostData {
@@ -20,6 +21,7 @@ export const createTodo =  async (
         completed: 'not_complete',
     };
     try {
+        setloading(true)
         const response = await fetch('api/todo/create-todo', {
             method: 'POST',
             headers: {
@@ -36,6 +38,7 @@ export const createTodo =  async (
         setInputValue('')
         setTab('all')
         getData();
+        setloading(false)
     } catch (e) {
         console.log(e);
     }
@@ -44,9 +47,11 @@ export const createTodo =  async (
 
 export const updateStatusTodo =  async (
     getData: () => void,
-    id:string
+    id:string,
+    setloading : React.Dispatch<React.SetStateAction<boolean>>
 ) => {
     try {
+        setloading(true)
         const response = await fetch('api/todo/update-statusTodo', {
             method: 'PATCH',
             headers: {
@@ -55,6 +60,7 @@ export const updateStatusTodo =  async (
             body: JSON.stringify({ id })
         });
         getData();
+        setloading(false)
     } catch (e) {
         console.log(e);
     }
@@ -62,9 +68,11 @@ export const updateStatusTodo =  async (
 
 export const deleteItemTodo =  async (
     getData: () => void,
-    id:string
+    id:string,
+    setloading : React.Dispatch<React.SetStateAction<boolean>>
 ) => {
     try {
+        setloading(true)
         const response = await fetch(`api/todo/delete-todo`, {
             method: 'DELETE',
             headers: {
@@ -73,6 +81,7 @@ export const deleteItemTodo =  async (
             body: JSON.stringify({ id })
         });
         getData();
+        setloading(false)
     } catch (e) {
         console.log(e);
     }
@@ -80,9 +89,11 @@ export const deleteItemTodo =  async (
 
 export const deleteCompletedTodo =  async (
     getData: () => void,
-    data:never[]
+    data:never[],
+    setloading : React.Dispatch<React.SetStateAction<boolean>>
 ) => {
     try {
+        setloading(true)
         const response = await fetch(`api/todo/delete-completeTodo`, {
             method: 'DELETE',
             headers: {
@@ -91,6 +102,7 @@ export const deleteCompletedTodo =  async (
             body: JSON.stringify(data)
         });
         getData();
+        setloading(false)
     } catch (e) {
         console.log(e);
     }

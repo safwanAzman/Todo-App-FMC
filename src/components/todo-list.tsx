@@ -12,13 +12,24 @@ type TodoItem = {
 type TodoListProps = {
     data: TodoItem[];
     tab :string;
+    loading : boolean;
     updateTodoComplete: (id: string) => void;
     deleteTodo: (id: string) => void;
 };
 
-const TodoList: React.FC<TodoListProps> = ({ data, updateTodoComplete, deleteTodo,tab }) => {
+const TodoList: React.FC<TodoListProps> = ({ data, updateTodoComplete, deleteTodo,tab,loading }) => {
     return (
-        <div className="h-72 overflow-y-auto divide-y dark:divide-gray-700">
+        <div className="h-72 overflow-y-auto divide-y dark:divide-gray-700 relative">
+
+        {loading == true ?
+            <div className="bg-white dark:bg-gray-800 absolute inset-0 flex flex-col items-center justify-center">
+                <div className="relative animate-spin">
+                    <div className="rounded-full  w-7 h-7 flex items-center justify-center  bg-gradient-to-r from-checkBgFrom to-checkBgTo "></div>
+                    <div className="bg-white backdrop-blur-lg  w-6 h-6 rounded-full dark:bg-gray-800 absolute top-[0.1rem] left-[0.1rem]  "></div>
+                </div>
+                <p className="dark:text-white text-xs mt-1 text-center pl-2">loading...</p>
+            </div>
+        :null}
         {data.length > 0 ?
             <>
             {data.map((item, index) => (
