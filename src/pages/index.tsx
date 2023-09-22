@@ -121,7 +121,7 @@ export default function Home() {
                 {tab == 'active' ?
                   <TodoList 
                     tab={tab}
-                    loading={false}
+                    loading={loading}
                     data={dataActive} 
                     updateTodoComplete={updateTodoComplete} 
                     deleteTodo={deleteTodo} 
@@ -132,7 +132,7 @@ export default function Home() {
                 {tab == 'complete' ?
                   <TodoList 
                     tab={tab}
-                    loading={false}
+                    loading={loading}
                     data={dataComplete} 
                     updateTodoComplete={updateTodoComplete} 
                     deleteTodo={deleteTodo} 
